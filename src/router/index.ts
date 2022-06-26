@@ -1,26 +1,47 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import localcache from '@/utils/cache'
+import {firstMenu} from '@/utils/mapMenusToRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    redirect:'/login'
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/login",
+    name: "login",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+      import("../views/login/login.vue"),
+  }, {
+    path: "/main",
+    name: "main",
+    component: () =>
+      import("../views/main/main.vue"),
+  },{
+    path:'/:pathMatch(.*)',
+    component:()=> import('@/views/not-fund/not-fund.vue')
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+router.beforeEach((to) => {
+  //如果没去login页面，也没有拿到token，则一律回到login
+  if(to.path !== '/login'){
+    const token = localcache.getCache('token')
+    if(!token){
+      return '/login'
+    }
+  }
+
+  //第一次进入main的重定向
+  if(to.path === '/main'){
+    return firstMenu.url
+  }
+
+})
 
 export default router;
