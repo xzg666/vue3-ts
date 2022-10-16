@@ -19,9 +19,9 @@
             </span>
           </template>
           <login-phone />
-          <el-icon>
+          <!-- <el-icon>
             <arrow-down />
-          </el-icon>
+          </el-icon> -->
         </el-tab-pane>
       </el-tabs>
       <div class="pasw-fun">

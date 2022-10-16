@@ -69,7 +69,7 @@ const LoginModule:Module<ILoginState,IRootState> = {
       commit('changeUserMenus',userMenus)
       localCache.setCache('userMenus',userMenus)
 
-      //3.路由跳转到首页
+      //4.路由跳转到首页
       router.push('/main')
     },
     loadLocalLogin({commit,dispatch}){

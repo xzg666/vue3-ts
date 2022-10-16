@@ -3,6 +3,7 @@ import type {IRootState} from './type'
 
 import login from "./login";
 import system from "./main/system";
+import dashboard from './main/analysis/dashboard'
 
 import {getPageListData} from '@/service/main/system/system'
 
@@ -48,10 +49,12 @@ const store =  createStore<IRootState>({
   },
   modules: {
     login,
-    system
+    system,
+    dashboard
   },
 });
 
+//刷新重新dispatch
 export function setupStore(){
   store.dispatch('login/loadLocalLogin')
 }

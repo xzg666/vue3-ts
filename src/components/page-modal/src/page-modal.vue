@@ -60,7 +60,7 @@ const handleConfirmClick = ()=>{
   dialogVisible.value = !dialogVisible.value
   if(Object.keys(props.defaultValue).length){
     //编辑
-    console.log('编辑用户')
+    console.log('编辑用户',props.otherInfo)
     store.dispatch('system/editPageDataAction',{
       pageName:props.pageName,
       editData:{...formData.value,...props.otherInfo},
@@ -69,7 +69,7 @@ const handleConfirmClick = ()=>{
 
   }else{
     //新建
-    console.log('新建用户')
+    console.log('新建用户',props.otherInfo)
     store.dispatch('system/createPageDataAction',{
       pageName:props.pageName,
       newData:{...formData.value,...props.otherInfo}
