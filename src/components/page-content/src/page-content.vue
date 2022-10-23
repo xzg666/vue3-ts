@@ -8,7 +8,11 @@
     >
       <!-- header中的插槽 -->
       <template #header-handler>
-        <el-button v-if="isCreate" type="primary" size="medium" @click="handleNewClick"
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="medium"
+          @click="handleNewClick"
           >新建用户</el-button
         >
       </template>
@@ -25,12 +29,20 @@
       }}</template>
       <template #handler="scope">
         <div class="handler-btns">
-          <el-button v-if="isUpdate" icon="edit" size="mini" type="text"
-          @click="handleEditClick(scope.row)"
+          <el-button
+            v-if="isUpdate"
+            icon="edit"
+            size="mini"
+            type="text"
+            @click="handleEditClick(scope.row)"
             >编辑</el-button
           >
-          <el-button v-if="isDelete" icon="delete" size="mini" type="text"
-          @click="handleDeteClick(scope.row)"
+          <el-button
+            v-if="isDelete"
+            icon="delete"
+            size="mini"
+            type="text"
+            @click="handleDeteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -51,11 +63,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, defineExpose, ref, watch,defineEmits } from 'vue'
+import {
+  defineProps,
+  computed,
+  defineExpose,
+  ref,
+  watch,
+  defineEmits
+} from 'vue'
 import { useStore } from 'vuex'
 
 import HyTable from '@/base-ui/table'
 import { usePermission } from '@/hooks/use-permission'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const props = defineProps({
   contentTableConfig: {
@@ -113,22 +133,43 @@ const otherPropsSlot = props.contentTableConfig.propList.filter((item: any) => {
 })
 
 //删除event
-const handleDeteClick = (item:any) => {
-  console.log(item)
-  store.dispatch('system/deletePageDataAction',{
-    pageName:props.pageName,
-    id:item.id
-  })
+const handleDeteClick = (item: any) => {
+  // console.log(item)
+  ElMessageBox.confirm(
+    `是否删除${item.name}?`,
+    {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+      center: true
+    }
+  )
+    .then(() => {
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+      ElMessage({
+        type: 'success',
+        message: '已删除'
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除'
+      })
+    })
 }
 
-const emit = defineEmits(['newBtnClick','editBtnClick'])
+const emit = defineEmits(['newBtnClick', 'editBtnClick'])
 //新建
 const handleNewClick = () => {
   emit('newBtnClick')
 }
 //编辑
-const handleEditClick = (item:any) => {
-  emit('editBtnClick',item)
+const handleEditClick = (item: any) => {
+  emit('editBtnClick', item)
 }
 </script>
 
